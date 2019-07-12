@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+                       <h:form>
+                <p:commandButton id="linkpag" value="Ver Lista de Productos"  action="paginaproductos"/>      
+                 <p:commandButton id="linkpag1" value="Ver Lista de Categorias"  action="vistaCategorias"/>
+                 <p:commandButton id="xddddddddddddddddddddddd" action="paginainicio" value="Volver"/>  
+                 <p:commandButton value="Cerrar Session" icon="ui-icon-power" action="#{detalleFormBean.reiniciarLista1()}" />
+                   </h:form>
+               <h:form id="formu5" >
+                   <p:growl id="msg3" showDetail="true" />
+                   <p:panel  id="pn6" header="Usuarios Cargados">
+                       <p:dataTable id="tabla" value="#{usuarioFormBean.obtenerListado()}" editable="true" emptyMessage="No Hay Usuarios Registrados" var="us">
+                           <p:ajax  id="aax" event="rowEdit" listener="#{usuarioFormBean.onRowEdit}" update=":formu5:msg3"/>
+                       <p:ajax event="rowEditCancel" listener="#{usuarioFormBean.onRowEditCancel}" update=":formu5:msg3"/>
+                       <p:column headerText="Nombre De Usuario">
+                           <p:cellEditor>
+                               <f:facet  name="output">
+                                  <p:outputLabel id="outd1" value="#{us.nombreUsuario}"/> 
+                               </f:facet>
+                               <f:facet name="input">
+                                   <p:inputText id="txttbl1" value="#{us.nombreUsuario}" required="true"/>
+                               </f:facet>
+                           </p:cellEditor>
+                       </p:column>
+                       <p:column headerText="Nombre">
+                            <p:cellEditor >
+                               <f:facet  name="output">
+                                   <p:outputLabel id="outd2" value="#{us.nombres}"/> 
+                               </f:facet>
+                               <f:facet name="input">
+                                   <p:inputText id="txttbl2" value="#{us.nombres}" required="true"/>
+                               </f:facet>
+                           </p:cellEditor>
+                       </p:column>
+                       <p:column headerText="Apellido">
+                              <p:cellEditor >
+                               <f:facet  name="output">
+                                   <p:outputLabel id="outd3" value="#{us.apellidos}"/> 
+                               </f:facet>
+                               <f:facet name="input">
+                                   <p:inputText id="txttbl3" value="#{us.apellidos}" required="true"/>
+                               </f:facet>
+                           </p:cellEditor>
+                       </p:column>
+                       <p:column headerText="Tipo De Usuario">
+                            <p:cellEditor >
+                               <f:facet  name="output">
+                                   <p:outputLabel id="outd4" value="#{us.tipoUsuario}"/> 
+                               </f:facet>
+                               <f:facet name="input">
+                                   <p:inputText id="txttbl4" value="#{us.tipoUsuario}" required="true"/>
+                               </f:facet>
+                           </p:cellEditor>
+                       </p:column>
+                       <p:column headerText="Contraseña">
+                           <p:cellEditor >
+                               <f:facet  name="output">
+                                   <p:outputLabel id="outd5" value="#{us.password}"/> 
+                               </f:facet>
+                               <f:facet name="input">
+                                   <p:inputText id="txttbl5" value="#{us.password}" required="true"/>
+                               </f:facet>
+                           </p:cellEditor>
+                       </p:column>
+                       <p:column headerText="Opciones" >
+                           <p:rowEditor>
+                               <p:outputLabel value=" v Editar"/>
+                           </p:rowEditor>
+                           
+                           <p:commandButton id="outd10" value="Eliminar" icon="ui-icon-trash" actionListener="#{usuarioFormBean.eliminarUsuario(us)}" update="tabla :formu5:msg3"/>
+                       </p:column>
+                    </p:dataTable>
+                       <p:commandButton id="poo" value="Agregar Usuario"  oncomplete="PF('crear').show()" update=":dialog6"/>
+               </p:panel>
+           </h:form>
+        <p:dialog id="dialog6" widgetVar="crear" showEffect="shake" hideEffect="fade" >
+            <h:form id="yio" >
+                <p:panel id="tuuu">
+                    <p:panelGrid id="pngh"  columns="2">
+                        <p:outputLabel value="ingrese nombre del usuario"  for="wer"/>
+                        <p:inputText id="wer" value="#{usuarioFormBean.unUsuario.nombreUsuario}" required="true" title="nombreusuario" label="debe ingresar el nombreusuario para crearlo"/>
+                        <p:outputLabel value=" ingrese nombre" id="trer" for="rtt" />
+                        <p:inputText id="rtt" value="#{usuarioFormBean.unUsuario.nombres}"  required="true" label="ingrese nombre porfavor" title="ingrese nombre"/>
+                        <p:outputLabel id="fghd" value="ingrese contraseña" />
+                        <p:password id="txtd2g" value="#{usuarioFormBean.unUsuario.password}" promptLabel="ingrese contraseña" weakLabel="Debil" goodLabel="Buena" strongLabel="Es exageradamente buena" feedback="true" required="true" label="se requiere contraseña"/>
+                      
+                        <p:outputLabel id="qws" value="ingrese su apellido" for="cvb"/>
+                        <p:inputText id="cvb" value="#{usuarioFormBean.unUsuario.apellidos}" required="true" label="ingrese su apellido porfavor"/>
+                        <p:outputLabel id="qa" value="ingrese su DNI"  for="bnm"/>
+                        <p:inputNumber id="bnm" value="#{usuarioFormBean.unCliente.dni}" required="true" decimalPlaces="0" size="8" title="Ingrese denei"/>
+                        <p:outputLabel id="xcf" value="Seleccione tipo usuario"/>
+                        <p:selectOneMenu id="select5" value="#{usuarioFormBean.unUsuario.tipoUsuario}">
+                            
+                            <f:selectItem id="hhj" itemLabel="seleccione tipo de usuario" itemValue="#{null}" />
+                            <f:selectItems id="cv" value="#{usuarioFormBean.privilegio}" var="tr" itemLabel="#{tr}" itemValue="#{tr}" />
+                        </p:selectOneMenu>
+                        <p:commandButton  id="qweqs" value="Cargar" actionListener="#{usuarioFormBean.crearUsuarioAdmioCliente()}" update="formu5:tabla :formu5:msg3"  oncomplete="PF ('crear').hide()"/>
+                    </p:panelGrid>              
+            </p:panel>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+         <h:form id="frm6">
+             <p:menubar>
+                 <p:submenu label="Opciones">
+                     <p:menuitem >
+                         <p:commandButton value="Volver" action="paginainicio" />  
+                     </p:menuitem>
+                     <p:menuitem >
+                         <p:commandButton value="Comprar productos" action="vistadecompra"/>
+                     </p:menuitem>
+                     <p:menuitem>
+                         <p:commandButton value="Ajustes" action="VistaProducto"/>
+                     </p:menuitem>
+                      <f:facet name="options"
+                           
+                               <p:commandButton value="Cerrar Session" icon="ui-icon-power" action="#{detalleFormBean.reiniciarLista()}" />
+                       </f:facet>
+                 </p:submenu>
+             </p:menubar>
+             <p:outputLabel id="outu1" value="#{usuarioFormBean.unUsuario.nombreUsuario}"/>
+                    
+        </h:form>
+        <h:form id="frm7" >
+                    <p:growl id="mensaje" showDetail="true"/>
+                    <p:dataGrid columns="3" id="data1" value="#{productoFormBean.productos}" var="prod" paginator="true" rows="4" styleClass="paginated" >
+                        <f:facet name="header" >
+                            Productos a la Venta
+                        </f:facet>
+                        <p:panel header="#{prod.descripcion}" style="text-align: center">
+                            <p:panelGrid columns="1" style="width: 100%">
+                                 <p:graphicImage value="#{productoFormBean.fotoproducto}" height="200px" width="200px">
+                                    <f:param name="codProd" value="#{prod.codProducto}"/>
+                                </p:graphicImage>
+                                 <h:outputText id="aja" value="  Precio : $#{prod.precio}"  style="display: inline-block; background-size:  cover"/>                                    
+                              
+                                <p:commandLink  id="yyy" actionListener="#{productoFormBean.mostrarProducto(prod)}" update=":dialg1"  oncomplete="PF('Productos').show()" title="View Detail" styleClass="ui-icon-trash" style="color: #D20005">
+                                <h:outputText id="aja2"  value="Detalles:"/>
+                                </p:commandLink>
+                            </p:panelGrid>
+                        </p:panel>
+                          
+                       
+                               
+                    
+                        
+                    </p:dataGrid>
+                    <p:commandButton update="dialg2" id="xdddddddddddddddddd" value="Agregar Prod" oncomplete="PF('AgregarProd').show()"  rendered="#{usuarioFormBean.admin}"/>
+                    
+                </h:form>
+                <p:dialog id="dialg1" header="Detalles" widgetVar="Productos" modal="true" showEffect="blind" hideEffect="explode" resizable="false">
+                    <h:form id="frmdialg1">
+                        <p:outputPanel id="prodDetail" style="text-align: center">
+                            <h:panelGrid id="prodDetail4" columns="1" >
+                                    <p:column>
+                                        <p:outputLabel id="xxxxxx" value="CodProd: #{productoFormBean.otroProducto.codProducto}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="Xd2" value="Precio: $#{productoFormBean.otroProducto.precio}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="Descripcion: #{productoFormBean.otroProducto.descripcion}" id="xddddd"/>
+                                    </p:column>
+                                <p:column>
+                                    <p:outputLabel value="Categoria: #{productoFormBean.otroProducto.categorias.nombre}" id="nonada"/>
+                                    </p:column>
+                                <p:column>
+                                    <p:commandButton  value="Añadir compra" id="btnnnnnn" actionListener="#{detalleFormBean.agregardetalle(productoFormBean.otroProducto)}" oncomplete="PF('Productos').hide()" update=":frm7:mensaje"/>
+                                </p:column>
+                        </h:panelGrid>
+                            </p:outputPanel>
+                    </h:form>
+                </p:dialog>
+                <p:dialog id="dialg2" header="Product" widgetVar="AgregarProd" showEffect="blind" hideEffect="explode" resizable="false">
+                    <h:form id="formdialg2" enctype="multipart/form-data">
+                        <p:panelGrid id="xdxddxxdxdxd" columns="2">
+                            <p:outputLabel for="hh" value="Precio: " id="tyuu"/>
+                            <p:inputNumber id="hh" value="#{productoFormBean.unProducto.precio}" required="true" decimalPlaces="2"  decimalSeparator=",">
+                        </p:inputNumber>
+                            <p:outputLabel for="hh2" value="Stoc: " id="uu"/>
+                            <p:inputNumber id="hh2" value="#{productoFormBean.unProducto.stock}" required="true" />
+                        <p:outputLabel   id="r" for="hh3" value="Descripcion: "/>
+                        <p:inputText id="hh3" value="#{productoFormBean.unProducto.descripcion}" required="true" />
+                        <p:outputLabel id="out9" value="Seleccione categoria"/>
+                        <p:selectOneMenu id="xddxxdxdxdxxdxdx" value="#{productoFormBean.unProducto.categorias}"
+                                         converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem id="ppepe" itemLabel="Categorias" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems id="oo" value="#{categoriaFormBean.obtenerCategoriass}" 
+                                           var="cat" 
+                                           itemLabel="#{cat.nombre}" itemValue="#{cat}"/>
+                        </p:selectOneMenu>
+                        <p:fileUpload id="foto" mode="simple" value="#{productoFormBean.archivo1}"  />
+                        
+                        
+                        <p:commandButton id="je" value="AgregarProd" ajax="false" update=":frm7:mensaje :frm7:data1" actionListener="#{productoFormBean.agregarProducto()}" oncomplete="PF('AgregarProd').hide()"/>
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+    </h:body>
+</html>
+

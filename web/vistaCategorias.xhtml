@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="formu6" >
+                   <p:growl id="msg4" showDetail="true" />
+                   <p:panel  id="pn9" header="Productos Cargados">
+                       <p:linkButton value="Volver" outcome="paginainicio.xhtml" />
+                        <p:commandButton value="Cerrar Session" icon="ui-icon-power" action="#{detalleFormBean.reiniciarLista1()}" />
+                       <p:commandButton value="Cargar Categoria"  oncomplete="PF('CargCat').show()" update=":ff"/>
+                       <p:dataTable id="tabla1" value="#{categoriaFormBean.obtenerCategoriass}" editable="true" emptyMessage="No Hay Categorias Cargada" var="as">
+                       <p:ajax event="rowEdit" listener="#{categoriaFormBean.onRowEdit}" update=":formu6:msg4"/>
+                       <p:ajax event="rowEditCancel" listener="#{categoriaFormBean.onRowEditCancel}" update=":formu6:msg4"/>
+                       <p:column headerText="Nombre De Categoria">
+                           <p:cellEditor>
+                               <f:facet  name="output">
+                                   <p:outputLabel id="outd11" value="#{as.nombre}"/> 
+                               </f:facet>
+                               <f:facet name="input">
+                                   <p:inputText id="txttbl11" value="#{as.nombre}" required="true"/>
+                               </f:facet>
+                           </p:cellEditor>
+                       </p:column>
+                       <p:column headerText="Descripcion">
+                            <p:cellEditor >
+                               <f:facet  name="output">
+                                   <p:outputLabel id="outd22" value="#{as.descripcion}"/> 
+                               </f:facet>
+                               <f:facet name="input">
+                                   <p:inputText id="txttbl22" value="#{as.descripcion}" required="true"/>
+                               </f:facet>
+                           </p:cellEditor>
+                       </p:column>
+                       <p:column headerText="Opciones" >
+                           <p:rowEditor />
+                           <p/>
+                           <p:commandButton id="outd19" value="Eliminar" icon="ui-icon-trash" actionListener="#{categoriaFormBean.eliminarCategoria(as)}" update="formu6 :formu6:msg4"/>
+                       </p:column>
+                    </p:dataTable>
+               </p:panel>
+           </h:form>
+        <p:dialog id="ff" widgetVar="CargCat" header="Categoria" modal="true" showEffect="blind" hideEffect="explode" resizable="true">
+            <h:form id="xddddddddddddddddddddddd">
+                <p:panelGrid columns="1">
+                <p:outputLabel for="pp" value="Nombre" id="ll2"/>
+                <p:inputText id="pp" value="#{categoriaFormBean.unaCategoria.nombre}" required="true" label="Es nECESARIO"/>
+                <p:outputLabel for="pp2" value="Descripcion" id="ll"/>
+                <p:inputText id="pp2" value="#{categoriaFormBean.unaCategoria.descripcion}" required="true" label="Se requiere we"/> 
+                <p:commandButton id="oo" icon="ui-icon-disk" value="Carga" actionListener="#{categoriaFormBean.agregarCategoria()}" oncomplete="PF('CargCat').hide()"
+                                 update=":formu6:msg4 :formu6:tabla1"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

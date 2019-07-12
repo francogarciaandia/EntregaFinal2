@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/template1.xhtml">
+
+            <ui:define name="top">
+                <h:body >
+        <p:panel header="Lista de productos comprados" >
+            
+            <h:form enctype="multipart/form-data" >
+                 <p:commandButton value="Cerrar Session" icon="ui-icon-power" action="#{detalleFormBean.reiniciarLista1()}" />
+                <p:panelGrid columns="6" >
+                    <p:dataTable  emptyMessage="No se selecciono nada" var="comp" value="#{detalleFormBean.obtenerDetalle()}" > 
+                        <p:column headerText="Producto" >
+                            <p:outputLabel value="#{comp.productos.descripcion}"/>
+                        </p:column>    
+                        <p:column headerText="Categoria">
+                            <p:outputLabel value="#{comp.productos.categorias.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Precio">
+                            <p:outputLabel value="#{comp.productos.precio}"/>
+                        </p:column>
+                        <p:column headerText="Cantidad">
+                            <p:spinner min="0" max="#{comp.productos.stock}" value="#{comp.cantidad}" >
+                                <p:ajax update="outy" process="@this"/>
+                            </p:spinner>
+                        </p:column>
+                        <p:column headerText="Total Producto" >
+                            <p:outputLabel id="outy" value="#{detalleFormBean.calculo(comp)}"/>
+                        </p:column>
+
+                        <p:column headerText="Comprar">
+                            <p:selectBooleanCheckbox id="Seleccionar" value="#{comp.estado}">
+                            </p:selectBooleanCheckbox>
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
+                <p:commandButton value="volver" action="#{detalleFormBean.reiniciarLista()}" />
+            </h:form>
+        </p:panel>
+                    
+                    
+        <p:dialog id="altaus" 
+                  header="Confirmar Compra" widgetVar="Agregar"
+                  resizable="false" modal="true" height="200" >
+                <h:form id="frmAltaUs">
+                    <p:panelGrid  columns="3">
+                        <p:dataTable  id="dth" value="#{detalleFormBean.otroDetalles}" var="v" >
+                            <p:column headerText="producto">
+                                <p:outputLabel  id="rt" value="#{v.productos.categorias.nombre}" />
+                            </p:column>
+                       
+                            <p:column headerText="Cantidad">
+                                <p:outputLabel id="op" value="#{v.cantidad}" />
+                            </p:column>
+                        
+                            <p:column headerText="Costo Total">
+                                <p:outputLabel id="kk" value="#{v.precioProdCant}" />
+                            </p:column>
+                             
+                        </p:dataTable>     
+                    </p:panelGrid>
+                    <p:panelGrid columns="2">
+                                <p:outputLabel value="Forma  de  pago   "/>                               
+                                <p:selectOneMenu value="#{detalleFormBean.modoPago.descripcion}" >
+                                    <f:selectItem itemLabel="Seleccione metodo" itemValue="#{null}" noSelectionOption="True"/> 
+                                   <f:selectItems value="#{detalleFormBean.decripciones}"
+                                                  var="yoo"  itemLabel="#{yoo}" itemValue="#{yoo}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Cantidad de cuotas"/>
+                                <p:spinner  id="yuy" value="#{detalleFormBean.modoPago.cuotas}" min="0" max="12"  />
+                                <p:commandButton  value="Confirmar" action="#{detalleFormBean.generarFactura()}"/>
+                            <p:linkButton outcome="vistadecompra.xhtml" value="volver"/>
+                    </p:panelGrid>
+                </h:form>
+        </p:dialog>
+    </h:body>
+            </ui:define>
+
+            <ui:define name="content">
+                <p:outputLabel value="Si ya selecciono los productos que va a comprar, haga click en este enlace:"/>
+                <p:commandLink id="link" value="Pagar productos"  actionListener="#{detalleFormBean.volverListado()}"
+                               update=":altaus" 
+                               oncomplete="PF('Agregar').show()"/> 
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
